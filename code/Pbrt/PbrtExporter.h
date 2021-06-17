@@ -123,6 +123,8 @@ private:
 
     void WriteMesh(aiMesh* mesh);
 
+    void GetMeshDimension(aiMesh* mesh);
+    
     void WriteInstanceDefinition(int i);
     void WriteGeometricObjects(aiNode* node, aiMatrix4x4 parentTransform,
                                std::map<int, int> &meshUses);

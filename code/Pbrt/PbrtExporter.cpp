@@ -82,10 +82,12 @@ Other:
 #include <memory>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+using namespace std;
 using namespace Assimp;
 
 namespace Assimp {
@@ -784,7 +786,28 @@ void PbrtExporter::WriteLights() {
         }
     }
 }
-
+void PbrtExporter::GetMeshDimension(aiMesh* mesh) {
+    // auto minX = 0;
+    // auto minY = 0;
+    // auto minZ = 0;
+    // auto maxX = 0;
+    // auto maxY = 0;
+    // auto maxZ = 0;
+    vector<float> x_coord;
+    vector<float> y_coord;
+    vector<float> z_coord;
+    for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+        auto vector = mesh->mVertices[i];
+        x_coord.push_back(vector.x);
+        y_coord.push_back(vector.y);
+        z_coord.push_back(vector.z);
+    }
+    auto mnmxX = minmax_element(x_coord.begin(), x_coord.end());
+    auto mnmxY = minmax_element(y_coord.begin(), y_coord.end());
+    auto mnmxZ = minmax_element(z_coord.begin(), z_coord.end());
+    mOutput << " # Dimension:["<< *mnmxX.second - *mnmxX.first<<
+        " "<< *mnmxY.second - *mnmxY.first<<" "<< *mnmxZ.second - *mnmxY.first<<"] ";
+}
 void PbrtExporter::WriteMesh(aiMesh* mesh) {
     mOutput << "# - Mesh: ";
     if (mesh->mName == aiString(""))
@@ -924,7 +947,8 @@ void PbrtExporter::WriteGeometricObjects(aiNode* node, aiMatrix4x4 worldFromObje
             if (meshUses[node->mMeshes[i]] == 1) {
                 // If it's only used once in the scene, emit it directly as
                 // a triangle mesh.
-                mOutput << "  # " << mesh->mName.C_Str();
+                mOutput << "  #ObjectName " << mesh->mName.C_Str();
+                GetMeshDimension(mesh);
                 WriteMesh(mesh);
             } else {
                 // If it's used multiple times, there will be an object
