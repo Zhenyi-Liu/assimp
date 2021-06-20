@@ -787,12 +787,6 @@ void PbrtExporter::WriteLights() {
     }
 }
 void PbrtExporter::GetMeshDimension(aiMesh* mesh) {
-    // auto minX = 0;
-    // auto minY = 0;
-    // auto minZ = 0;
-    // auto maxX = 0;
-    // auto maxY = 0;
-    // auto maxZ = 0;
     vector<float> x_coord;
     vector<float> y_coord;
     vector<float> z_coord;
@@ -805,7 +799,7 @@ void PbrtExporter::GetMeshDimension(aiMesh* mesh) {
     auto mnmxX = minmax_element(x_coord.begin(), x_coord.end());
     auto mnmxY = minmax_element(y_coord.begin(), y_coord.end());
     auto mnmxZ = minmax_element(z_coord.begin(), z_coord.end());
-    mOutput << " # Dimension:["<< *mnmxX.second - *mnmxX.first<<
+    mOutput << "#Dimension:["<< *mnmxX.second - *mnmxX.first<<
         " "<< *mnmxY.second - *mnmxY.first<<" "<< *mnmxZ.second - *mnmxY.first<<"] ";
 }
 void PbrtExporter::WriteMesh(aiMesh* mesh) {
