@@ -64,7 +64,7 @@ struct ImportSettings {
             optimizeEmptyAnimationCurves(true),
             useLegacyEmbeddedTextureNaming(false),
             removeEmptyBones(true),
-            convertToMeters(false) {
+            convertToMeters(true) {
         // empty
     }
 
